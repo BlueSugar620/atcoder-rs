@@ -1,2 +1,5 @@
 .cargo
 target
+
+*/testcases
+*/Cargo.lock
