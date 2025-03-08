@@ -1,0 +1,52 @@
+[package]
+name = "abc395"
+version = "0.1.0"
+edition = "2018"
+
+[package.metadata.cargo-compete.bin]
+abc395-a = { alias = "a", problem = "https://atcoder.jp/contests/abc395/tasks/abc395_a" }
+abc395-b = { alias = "b", problem = "https://atcoder.jp/contests/abc395/tasks/abc395_b" }
+abc395-c = { alias = "c", problem = "https://atcoder.jp/contests/abc395/tasks/abc395_c" }
+abc395-d = { alias = "d", problem = "https://atcoder.jp/contests/abc395/tasks/abc395_d" }
+abc395-e = { alias = "e", problem = "https://atcoder.jp/contests/abc395/tasks/abc395_e" }
+abc395-f = { alias = "f", problem = "https://atcoder.jp/contests/abc395/tasks/abc395_f" }
+abc395-g = { alias = "g", problem = "https://atcoder.jp/contests/abc395/tasks/abc395_g" }
+
+[[bin]]
+name = "abc395-a"
+path = "src/bin/a.rs"
+
+[[bin]]
+name = "abc395-b"
+path = "src/bin/b.rs"
+
+[[bin]]
+name = "abc395-c"
+path = "src/bin/c.rs"
+
+[[bin]]
+name = "abc395-d"
+path = "src/bin/d.rs"
+
+[[bin]]
+name = "abc395-e"
+path = "src/bin/e.rs"
+
+[[bin]]
+name = "abc395-f"
+path = "src/bin/f.rs"
+
+[[bin]]
+name = "abc395-g"
+path = "src/bin/g.rs"
+
+[dependencies]
+ac-library-rs = "=0.1.1"
+memoise = "=0.3.2"
+rand = "=0.8.5"
+superslice = "=1.0.0"
+itertools = "=0.11.0"
+proconio = { version = "=0.4.5", features = ["derive"] }
+rustc-hash = "=1.1.0"
+
+[dev-dependencies]
