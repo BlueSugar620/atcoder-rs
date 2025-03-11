@@ -1,0 +1,34 @@
+use proconio::input;
+
+fn main() {
+    input! {
+        n: usize,
+        m: usize,
+        mut b: [i64; n],
+        mut w: [i64; m],
+    }
+
+    b.sort_unstable();
+    b.reverse();
+    w.sort_unstable();
+    w.reverse();
+    let mut s = vec![0];
+    for i in 0..m {
+        if w[i] >= 0 {
+            s.push(s.last().unwrap() + w[i]);
+        } else {
+            s.push(*s.last().unwrap());
+        }
+    }
+    let mut ans = 0;
+    let mut black = 0;
+    for i in 0..n {
+        if m < i {
+            break;
+        }
+        black += b[i];
+        ans = ans.max(black + s[i + 1]);
+    }
+
+    println!("{}", ans);
+}
