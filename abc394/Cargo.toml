@@ -1,0 +1,52 @@
+[package]
+name = "abc394"
+version = "0.1.0"
+edition = "2018"
+
+[package.metadata.cargo-compete.bin]
+abc394-a = { alias = "a", problem = "https://atcoder.jp/contests/abc394/tasks/abc394_a" }
+abc394-b = { alias = "b", problem = "https://atcoder.jp/contests/abc394/tasks/abc394_b" }
+abc394-c = { alias = "c", problem = "https://atcoder.jp/contests/abc394/tasks/abc394_c" }
+abc394-d = { alias = "d", problem = "https://atcoder.jp/contests/abc394/tasks/abc394_d" }
+abc394-e = { alias = "e", problem = "https://atcoder.jp/contests/abc394/tasks/abc394_e" }
+abc394-f = { alias = "f", problem = "https://atcoder.jp/contests/abc394/tasks/abc394_f" }
+abc394-g = { alias = "g", problem = "https://atcoder.jp/contests/abc394/tasks/abc394_g" }
+
+[[bin]]
+name = "abc394-a"
+path = "src/bin/a.rs"
+
+[[bin]]
+name = "abc394-b"
+path = "src/bin/b.rs"
+
+[[bin]]
+name = "abc394-c"
+path = "src/bin/c.rs"
+
+[[bin]]
+name = "abc394-d"
+path = "src/bin/d.rs"
+
+[[bin]]
+name = "abc394-e"
+path = "src/bin/e.rs"
+
+[[bin]]
+name = "abc394-f"
+path = "src/bin/f.rs"
+
+[[bin]]
+name = "abc394-g"
+path = "src/bin/g.rs"
+
+[dependencies]
+ac-library-rs = "=0.1.1"
+memoise = "=0.3.2"
+rand = "=0.8.5"
+superslice = "=1.0.0"
+itertools = "=0.11.0"
+proconio = { version = "=0.4.5", features = ["derive"] }
+rustc-hash = "=1.1.0"
+
+[dev-dependencies]
