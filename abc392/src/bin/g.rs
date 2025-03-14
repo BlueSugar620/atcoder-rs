@@ -11,92 +11,109 @@ fn main() {
         idx[s] = gf!(1);
     }
 
-    let conv = convolution998_244_353(&idx, &idx);
+    let conv = NumberTheoric998244353::convolution(&idx, &idx);
 
-    let mut ans = 0u64;
+    let mut ans = 0;
     for &s in &s {
-        let x = conv[2 * s].value;
-        ans += (x - 1) / 2;
+        ans += (conv[2 * s].value - 1) / 2;
     }
 
     println!("{}", ans);
 }
 
-const MOD: u64 = 998_244_353;
-const SUM_E: [u64; 30] = [
+const SUM_E: [u64; 22] = [
     911660635, 509520358, 369330050, 332049552, 983190778, 123842337, 238493703, 975955924,
     603855026, 856644456, 131300601, 842657263, 730768835, 942482514, 806263778, 151565301,
-    510815449, 503497456, 743006876, 741047443, 56250497, 867605899, 0, 0, 0, 0, 0, 0, 0, 0,
+    510815449, 503497456, 743006876, 741047443, 56250497, 867605899,
 ];
-const SUM_IE: [u64; 30] = [
+const SUM_IE: [u64; 22] = [
     86583718, 372528824, 373294451, 645684063, 112220581, 692852209, 155456985, 797128860,
     90816748, 860285882, 927414960, 354738543, 109331171, 293255632, 535113200, 308540755,
-    121186627, 608385704, 438932459, 359477183, 824071951, 103369235, 0, 0, 0, 0, 0, 0, 0, 0,
+    121186627, 608385704, 438932459, 359477183, 824071951, 103369235,
 ];
 
-pub fn convolution998_244_353(a: &[GF<MOD>], b: &[GF<MOD>]) -> Vec<GF<MOD>> {
-    let size = (a.len() + b.len() - 1).next_power_of_two();
-    let mut f = vec![gf!(0); size];
-    let mut g = vec![gf!(0); size];
-    f[..a.len()].copy_from_slice(a);
-    g[..b.len()].copy_from_slice(b);
-    ntt(&mut f);
-    ntt(&mut g);
-    f.iter_mut().zip(g.iter()).for_each(|(f, g)| *f *= g);
-    intt(&mut f);
-    f.truncate(a.len() + b.len() - 1);
-    f
+pub trait Convolution {
+    type Value: Copy;
+    fn e() -> Self::Value;
+    fn mul(lhs: &Self::Value, rhs: &Self::Value) -> Self::Value;
+    fn convolution(lhs: &[Self::Value], rhs: &[Self::Value]) -> Vec<Self::Value> {
+        let size = (lhs.len() + rhs.len() - 1).next_power_of_two();
+        let mut f = vec![Self::e(); size];
+        let mut g = vec![Self::e(); size];
+        f[..lhs.len()].copy_from_slice(lhs);
+        g[..rhs.len()].copy_from_slice(rhs);
+
+        assert_eq!(f.len(), size);
+        assert_eq!(g.len(), size);
+
+        Self::fourier_transform(&mut f);
+        Self::fourier_transform(&mut g);
+
+        let mut h = f
+            .iter()
+            .zip(g.iter())
+            .map(|(f, g)| Self::mul(f, g))
+            .collect::<Vec<_>>();
+
+        Self::inverse_transform(&mut h);
+
+        h.truncate(lhs.len() + rhs.len() - 1);
+        h
+    }
+    fn fourier_transform(a: &mut [Self::Value]);
+    fn inverse_transform(a: &mut [Self::Value]);
 }
 
-fn ntt(f: &mut [GF<MOD>]) {
-    let n = f.len();
-    let len = n.trailing_zeros() as usize;
-    for ph in 1..=len {
-        let p = 1 << (len - ph);
-        let mut now = gf!(1);
-        for (i, f) in f.chunks_exact_mut(2 * p).enumerate() {
-            let (x, y) = f.split_at_mut(p);
-            for (x, y) in x.iter_mut().zip(y.iter_mut()) {
-                let l = *x;
-                let r = *y * now;
-                *x = l + r;
-                *y = l - r;
+enum NumberTheoric998244353 {}
+impl Convolution for NumberTheoric998244353 {
+    type Value = GF<998_244_353>;
+    fn e() -> Self::Value {
+        gf!(0)
+    }
+    fn mul(lhs: &Self::Value, rhs: &Self::Value) -> Self::Value {
+        lhs * rhs
+    }
+    fn fourier_transform(a: &mut [Self::Value]) {
+        let n = a.len();
+        let mut k = n;
+        while k > 1 {
+            k >>= 1;
+            let mut now = gf!(1);
+            for i in (0..n).step_by(2 * k) {
+                for j in i..i + k {
+                    (a[j], a[j + k]) = (a[j] + a[j + k] * now, a[j] - a[j + k] * now);
+                }
+                now *= gf!(SUM_E[(!(i / 2 / k)).trailing_zeros() as usize]);
             }
-            now *= gf!(SUM_E[(!i).trailing_zeros() as usize]);
         }
     }
-}
-
-fn intt(f: &mut [GF<MOD>]) {
-    let n = f.len();
-    let len = n.trailing_zeros();
-    for ph in (1..=len).rev() {
-        let p = 1 << (len - ph);
-        let mut inow = gf!(1);
-        for (i, f) in f.chunks_exact_mut(2 * p).enumerate() {
-            let (x, y) = f.split_at_mut(p);
-            for (x, y) in x.iter_mut().zip(y.iter_mut()) {
-                let l = *x;
-                let r = *y;
-                *x = l + r;
-                *y = (l - r) * inow;
+    fn inverse_transform(a: &mut [Self::Value]) {
+        let n = a.len();
+        let mut k = 1;
+        while k < n {
+            let mut now = gf!(1);
+            for i in (0..n).step_by(2 * k) {
+                for j in i..i + k {
+                    (a[j], a[j + k]) = (a[j] + a[j + k], (a[j] - a[j + k]) * now);
+                }
+                now *= gf!(SUM_IE[(!(i / 2 / k)).trailing_zeros() as usize]);
             }
-            inow *= gf!(SUM_IE[(!i).trailing_zeros() as usize]);
+            k <<= 1;
         }
-    }
-    let ik = gf!(2).inv().pow(len as u64);
-    for f in f.iter_mut() {
-        *f *= ik;
+        let ik = gf!(2).inv().pow(n.trailing_zeros() as u64);
+        for a in a.iter_mut() {
+            *a *= ik;
+        }
     }
 }
 
 use std::{
-    fmt::Display,
+    fmt::{Debug, Display},
     iter::{Product, Sum},
     ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssign},
 };
 
-#[derive(Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash)]
 pub struct GF<const MOD: u64> {
     value: u64,
 }
@@ -108,7 +125,7 @@ impl<const MOD: u64> GF<MOD> {
 
     pub fn pow(&self, mut exp: u64) -> Self {
         let mut res = Self::new(1);
-        let mut base = *self;
+        let mut base = self.clone();
         while exp > 0 {
             if exp & 1 == 1 {
                 res *= base;
@@ -124,8 +141,17 @@ impl<const MOD: u64> GF<MOD> {
     }
 }
 
-macro_rules! impl_from_signed {
-    ($($t:ty),*) => {
+#[macro_export]
+macro_rules! gf {
+    ($value:expr) => {
+        $crate::GF::from($value)
+    };
+    ($value:expr; mod $p:expr) => {
+        $crate::GF::<$p>::from($value)
+    };
+}
+macro_rules! new_from_signed {
+    ($($t:ty), *) => {
         $(
             impl<const MOD: u64> From<$t> for GF<MOD> {
                 fn from(x: $t) -> Self {
@@ -139,8 +165,9 @@ macro_rules! impl_from_signed {
         )*
     };
 }
-macro_rules! impl_from_unsigned {
-    ($($t:ty),*) => {
+new_from_signed!(i8, i16, i32, i64, i128, isize);
+macro_rules! new_from_unsigned {
+    ($($t:ty), *) => {
         $(
             impl<const MOD: u64> From<$t> for GF<MOD> {
                 fn from(x: $t) -> Self {
@@ -150,22 +177,25 @@ macro_rules! impl_from_unsigned {
         )*
     };
 }
-impl_from_signed!(i8, i16, i32, i64, i128, isize);
-impl_from_unsigned!(u8, u16, u32, u64, u128, usize);
-
-#[macro_export]
-macro_rules! gf {
-    ($value:expr) => {
-        $crate::GF::from($value)
-    };
-    ($value:expr; mod $p:expr) => {
-        $crate::GF::<$p>::from($value)
-    };
+new_from_unsigned!(u8, u16, u32, u64, u128, usize);
+impl<const MOD: u64> Debug for GF<MOD> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.value)
+    }
 }
-
 impl<const MOD: u64> Display for GF<MOD> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.value)
+    }
+}
+
+impl<const MOD: u64> Neg for GF<MOD> {
+    type Output = Self;
+    fn neg(mut self) -> Self::Output {
+        if self.value > 0 {
+            self.value = MOD - self.value;
+        }
+        self
     }
 }
 
@@ -197,7 +227,7 @@ impl<const MOD: u64> DivAssign<GF<MOD>> for GF<MOD> {
         self.value %= MOD;
     }
 }
-macro_rules! gf_forward_ops {
+macro_rules! gf_ops {
     ($(
             $trait:ident,
             $trait_assign:ident,
@@ -236,25 +266,16 @@ macro_rules! gf_forward_ops {
         }
     )*};
 }
-gf_forward_ops! {
+gf_ops! {
     Add, AddAssign, add, add_assign,
     Sub, SubAssign, sub, sub_assign,
     Mul, MulAssign, mul, mul_assign,
     Div, DivAssign, div, div_assign,
 }
-impl<const MOD: u64> Neg for GF<MOD> {
-    type Output = Self;
-    fn neg(mut self) -> Self::Output {
-        if self.value > 0 {
-            self.value = MOD - self.value;
-        }
-        self
-    }
-}
 
 impl<const MOD: u64> Sum for GF<MOD> {
     fn sum<I: Iterator<Item = Self>>(iter: I) -> Self {
-        iter.fold(Self::new(0), |acc, x| acc + x)
+        iter.fold(Self::new(0), |acc, a| acc + a)
     }
 }
 impl<'a, const MOD: u64> Sum<&'a Self> for GF<MOD> {
@@ -264,7 +285,7 @@ impl<'a, const MOD: u64> Sum<&'a Self> for GF<MOD> {
 }
 impl<const MOD: u64> Product for GF<MOD> {
     fn product<I: Iterator<Item = Self>>(iter: I) -> Self {
-        iter.fold(Self::new(1), |acc, x| acc * x)
+        iter.fold(Self::new(1), |acc, a| acc * a)
     }
 }
 impl<'a, const MOD: u64> Product<&'a Self> for GF<MOD> {
