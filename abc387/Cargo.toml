@@ -1,0 +1,52 @@
+[package]
+name = "abc387"
+version = "0.1.0"
+edition = "2018"
+
+[package.metadata.cargo-compete.bin]
+abc387-a = { alias = "a", problem = "https://atcoder.jp/contests/abc387/tasks/abc387_a" }
+abc387-b = { alias = "b", problem = "https://atcoder.jp/contests/abc387/tasks/abc387_b" }
+abc387-c = { alias = "c", problem = "https://atcoder.jp/contests/abc387/tasks/abc387_c" }
+abc387-d = { alias = "d", problem = "https://atcoder.jp/contests/abc387/tasks/abc387_d" }
+abc387-e = { alias = "e", problem = "https://atcoder.jp/contests/abc387/tasks/abc387_e" }
+abc387-f = { alias = "f", problem = "https://atcoder.jp/contests/abc387/tasks/abc387_f" }
+abc387-g = { alias = "g", problem = "https://atcoder.jp/contests/abc387/tasks/abc387_g" }
+
+[[bin]]
+name = "abc387-a"
+path = "src/bin/a.rs"
+
+[[bin]]
+name = "abc387-b"
+path = "src/bin/b.rs"
+
+[[bin]]
+name = "abc387-c"
+path = "src/bin/c.rs"
+
+[[bin]]
+name = "abc387-d"
+path = "src/bin/d.rs"
+
+[[bin]]
+name = "abc387-e"
+path = "src/bin/e.rs"
+
+[[bin]]
+name = "abc387-f"
+path = "src/bin/f.rs"
+
+[[bin]]
+name = "abc387-g"
+path = "src/bin/g.rs"
+
+[dependencies]
+ac-library-rs = "=0.1.1"
+memoise = "=0.3.2"
+rand = "=0.8.5"
+superslice = "=1.0.0"
+itertools = "=0.11.0"
+proconio = { version = "=0.4.5", features = ["derive"] }
+rustc-hash = "=1.1.0"
+
+[dev-dependencies]
