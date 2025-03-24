@@ -6,6 +6,7 @@ use proconio::*;
 use proconio::marker::*;
 use std::collections::*;
 use itertools::*;
+use superslice::Ext;
 
 type Map<K, V> = BTreeMap<K, V>;
 type Set<T> = BTreeSet<T>;
