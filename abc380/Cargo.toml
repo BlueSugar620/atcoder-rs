@@ -1,0 +1,52 @@
+[package]
+name = "abc380"
+version = "0.1.0"
+edition = "2018"
+
+[package.metadata.cargo-compete.bin]
+abc380-a = { alias = "a", problem = "https://atcoder.jp/contests/abc380/tasks/abc380_a" }
+abc380-b = { alias = "b", problem = "https://atcoder.jp/contests/abc380/tasks/abc380_b" }
+abc380-c = { alias = "c", problem = "https://atcoder.jp/contests/abc380/tasks/abc380_c" }
+abc380-d = { alias = "d", problem = "https://atcoder.jp/contests/abc380/tasks/abc380_d" }
+abc380-e = { alias = "e", problem = "https://atcoder.jp/contests/abc380/tasks/abc380_e" }
+abc380-f = { alias = "f", problem = "https://atcoder.jp/contests/abc380/tasks/abc380_f" }
+abc380-g = { alias = "g", problem = "https://atcoder.jp/contests/abc380/tasks/abc380_g" }
+
+[[bin]]
+name = "abc380-a"
+path = "src/bin/a.rs"
+
+[[bin]]
+name = "abc380-b"
+path = "src/bin/b.rs"
+
+[[bin]]
+name = "abc380-c"
+path = "src/bin/c.rs"
+
+[[bin]]
+name = "abc380-d"
+path = "src/bin/d.rs"
+
+[[bin]]
+name = "abc380-e"
+path = "src/bin/e.rs"
+
+[[bin]]
+name = "abc380-f"
+path = "src/bin/f.rs"
+
+[[bin]]
+name = "abc380-g"
+path = "src/bin/g.rs"
+
+[dependencies]
+ac-library-rs = "=0.1.1"
+memoise = "=0.3.2"
+rand = "=0.8.5"
+superslice = "=1.0.0"
+itertools = "=0.11.0"
+proconio = { version = "=0.4.5", features = ["derive"] }
+rustc-hash = "=1.1.0"
+
+[dev-dependencies]
