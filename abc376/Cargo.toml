@@ -1,0 +1,53 @@
+[package]
+name = "abc376"
+version = "0.1.0"
+edition = "2018"
+
+[package.metadata.cargo-compete.bin]
+abc376-a = { alias = "a", problem = "https://atcoder.jp/contests/abc376/tasks/abc376_a" }
+abc376-b = { alias = "b", problem = "https://atcoder.jp/contests/abc376/tasks/abc376_b" }
+abc376-c = { alias = "c", problem = "https://atcoder.jp/contests/abc376/tasks/abc376_c" }
+abc376-d = { alias = "d", problem = "https://atcoder.jp/contests/abc376/tasks/abc376_d" }
+abc376-e = { alias = "e", problem = "https://atcoder.jp/contests/abc376/tasks/abc376_e" }
+abc376-f = { alias = "f", problem = "https://atcoder.jp/contests/abc376/tasks/abc376_f" }
+abc376-g = { alias = "g", problem = "https://atcoder.jp/contests/abc376/tasks/abc376_g" }
+
+[[bin]]
+name = "abc376-a"
+path = "src/bin/a.rs"
+
+[[bin]]
+name = "abc376-b"
+path = "src/bin/b.rs"
+
+[[bin]]
+name = "abc376-c"
+path = "src/bin/c.rs"
+
+[[bin]]
+name = "abc376-d"
+path = "src/bin/d.rs"
+
+[[bin]]
+name = "abc376-e"
+path = "src/bin/e.rs"
+
+[[bin]]
+name = "abc376-f"
+path = "src/bin/f.rs"
+
+[[bin]]
+name = "abc376-g"
+path = "src/bin/g.rs"
+
+[dependencies]
+ac-library-rs = "=0.1.1"
+memoise = "=0.3.2"
+rand = "=0.8.5"
+superslice = "=1.0.0"
+itertools = "=0.11.0"
+proconio = { version = "=0.4.5", features = ["derive"] }
+rustc-hash = "=1.1.0"
+num = "=0.2.1"
+
+[dev-dependencies]
