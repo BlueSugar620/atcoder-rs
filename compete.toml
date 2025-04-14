@@ -14,6 +14,7 @@ use superslice::Ext;
 type Map<K, V> = BTreeMap<K, V>;
 type Set<T> = BTreeSet<T>;
 type Deque<T> = VecDeque<T>;
+type Heap<T> = BinaryHeap<T>;
 
 const MOD: u64 = 998_244_353;
 
