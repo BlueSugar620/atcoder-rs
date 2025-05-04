@@ -1,0 +1,57 @@
+test-suite = "{{ manifest_dir }}/testcases/{{ bin_alias }}.yml"
+
+[template]
+src = '''
+use itertools::*;
+use memoise::*;
+use num::integer::{nth_root, sqrt};
+use proconio::marker::*;
+use proconio::*;
+use rand::{thread_rng, Rng};
+use std::collections::*;
+use superslice::Ext;
+
+type Map<K, V> = BTreeMap<K, V>;
+type Set<T> = BTreeSet<T>;
+type Deque<T> = VecDeque<T>;
+type Heap<T> = BinaryHeap<T>;
+
+const MOD: u64 = 998_244_353;
+
+
+fn main() {
+    input!{
+    }
+}
+'''
+
+[template.new]
+edition = "2018"
+dependencies = '''
+ac-library-rs = "=0.1.1"
+memoise = "=0.3.2"
+rand = "=0.8.5"
+superslice = "=1.0.0"
+itertools = "=0.11.0"
+proconio = { version = "=0.4.5", features = ["derive"] }
+rustc-hash = "=1.1.0"
+num = "=0.2.1"
+'''
+dev-dependencies = '''
+#atcoder-202004-lock = { git = "https://github.com/qryxip/atcoder-202004-lock" }
+'''
+
+[template.new.copy-files]
+
+[new]
+kind = "cargo-compete"
+platform = "atcoder"
+path = "./{{ contest }}"
+
+[test]
+toolchain = "stable-aarch64-apple-darwin"
+
+[submit]
+kind = "file"
+path = "{{ src_path }}"
+language_id = "5054"
