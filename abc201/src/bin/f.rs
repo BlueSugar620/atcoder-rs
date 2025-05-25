@@ -1,4 +1,1 @@
-fn main() {
-    input!{
-    }
-}
+fn main() {}
