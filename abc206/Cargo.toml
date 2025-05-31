@@ -1,0 +1,48 @@
+[package]
+name = "abc206"
+version = "0.1.0"
+edition = "2018"
+
+[package.metadata.cargo-compete.bin]
+abc206-a = { alias = "a", problem = "https://atcoder.jp/contests/abc206/tasks/abc206_a" }
+abc206-b = { alias = "b", problem = "https://atcoder.jp/contests/abc206/tasks/abc206_b" }
+abc206-c = { alias = "c", problem = "https://atcoder.jp/contests/abc206/tasks/abc206_c" }
+abc206-d = { alias = "d", problem = "https://atcoder.jp/contests/abc206/tasks/abc206_d" }
+abc206-e = { alias = "e", problem = "https://atcoder.jp/contests/abc206/tasks/abc206_e" }
+abc206-f = { alias = "f", problem = "https://atcoder.jp/contests/abc206/tasks/abc206_f" }
+
+[[bin]]
+name = "abc206-a"
+path = "src/bin/a.rs"
+
+[[bin]]
+name = "abc206-b"
+path = "src/bin/b.rs"
+
+[[bin]]
+name = "abc206-c"
+path = "src/bin/c.rs"
+
+[[bin]]
+name = "abc206-d"
+path = "src/bin/d.rs"
+
+[[bin]]
+name = "abc206-e"
+path = "src/bin/e.rs"
+
+[[bin]]
+name = "abc206-f"
+path = "src/bin/f.rs"
+
+[dependencies]
+ac-library-rs = "=0.1.1"
+memoise = "=0.3.2"
+rand = "=0.8.5"
+superslice = "=1.0.0"
+itertools = "=0.11.0"
+proconio = { version = "=0.4.5", features = ["derive"] }
+rustc-hash = "=1.1.0"
+num = "=0.2.1"
+
+[dev-dependencies]
